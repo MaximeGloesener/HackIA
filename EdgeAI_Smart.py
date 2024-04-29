@@ -4,7 +4,7 @@
 from tkinter import *
 import torch
 from torchvision import transforms
-import face_recognition
+# import face_recognition
 import cv2
 import time
 import numpy as np
@@ -263,17 +263,19 @@ def main():
     label_msg3 = Label(
         main_frame,
         text=("Version initiale"),
-        bg="blue2",
+        bg="blue1",
+        fg="black",
         font=("Helvetica 20 bold"),
     )
-    label_msg3.place(x=150, y=120)
+    label_msg3.place(x=220, y=140)
     label_msg4 = Label(
         main_frame,
         text=("Version compressée"),
-        bg="blue2",
+        bg="blue1",
+        fg="black",
         font=("Helvetica 20 bold"),
     )
-    label_msg4.place(x=550, y=120)
+    label_msg4.place(x=580, y=140)
     # Menu
     but1 = Button(
         main_frame,
@@ -344,8 +346,8 @@ def main():
         padx=5,
         pady=5,
         # bd=5,
-        height=2,
-        width=15,
+        height=1,
+        width=14,
         bg="white",
         fg="black",
         relief=RAISED,
