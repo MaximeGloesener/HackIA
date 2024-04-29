@@ -214,7 +214,7 @@ def main():
     label_msg2.pack(side=TOP)
     
     # add logos to the interface
-    logo1 = Image.open("logos/UMONS-EN-rvb.png")
+    logo1 = Image.open("logos/umons.png")
     logo1 = logo1.resize((140, 80), Image.LANCZOS) 
     logo1 = ImageTk.PhotoImage(logo1)
     logo_label1 = Label(main_frame, image=logo1)
@@ -251,7 +251,7 @@ def main():
     logo_label4.image = logo5
     logo_label4.place(x=650, y=550)
 
-    logo6 = Image.open("logos/LOGO_F114_Mohammed-BENJELLOUN.png")
+    logo6 = Image.open("logos/ilia.png")
     logo6 = logo6.resize((140, 80), Image.LANCZOS)
     logo6 = ImageTk.PhotoImage(logo6)
     logo_label4 = Label(main_frame, image=logo6)
