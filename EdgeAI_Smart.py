@@ -62,13 +62,6 @@ def authentification():
                     known_face_encodings, face_encoding
                 )
                 name = "Unknown"
-
-                # # If a match was found in known_face_encodings, just use the first one.
-                # if True in matches:
-                #     first_match_index = matches.index(True)
-                #     name = known_face_names[first_match_index]
-
-                # Or instead, use the known face with the smallest distance to the new face
                 face_distances = face_recognition.face_distance(
                     known_face_encodings, face_encoding
                 )
@@ -122,13 +115,11 @@ def authentification():
 def fire_detection():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     fire_model = torch.load("models/MobileNetV3_20230425171303.pt").to(device)
-    # fire_model = torch.load('models/MobileNet_20230422201227.pt').to(device)
-    # fire_model = torch.load('models/MobileNetV3_20230427170313-2.pt').to(device)
     fire_model.train(False)
     transform = transforms.Compose(
         [
             transforms.ToPILImage(),
-            transforms.RandomResizedCrop(224),
+            transforms.RandomResizedCrop(224), # why random resize crop for inference ?
             transforms.ToTensor(),
         ]
     )
