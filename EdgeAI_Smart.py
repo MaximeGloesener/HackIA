@@ -12,6 +12,7 @@ import numpy as np
 from collections import deque
 # from mmcv.parallel import collate, scatter
 import os
+from PIL import Image, ImageTk
 
 
 LOADED = False
@@ -386,17 +387,20 @@ def inference():
 
 
 def main():
-    # allow gpu grow
+    # Etape 1: authentification pour accéder à l'interface graphique
+    """
     authorized = authentification()
     if not authorized:
         print("No authorization")
         from sys import exit
         exit(0)
-    # create interface
+    """
+
+    # Etape 2: interface graphique
     root = Tk()
     root.geometry("850x500")
     root.title("Edge AI System")
-    #
+    
     # Main frame
     main_frame = Frame(root, relief=RIDGE, borderwidth=2)
     main_frame.config(background="blue1")
@@ -414,7 +418,36 @@ def main():
         font=("Helvetica 22 bold"),
     )
     label_msg2.pack(side=TOP)
-    #
+    
+    # add logos to the interface
+    logo1 = Image.open("logos/UMONS-EN-rvb.png")
+    logo1 = logo1.resize((180, 120)) 
+    logo1 = ImageTk.PhotoImage(logo1)
+    logo_label1 = Label(main_frame, image=logo1)
+    logo_label1.image = logo1
+    logo_label1.place(x=10, y=10)
+    logo_label1.pack(side=LEFT)
+
+    logo2 = Image.open("logos/fpms.png")
+    logo2 = logo2.resize((180, 120))
+    logo2 = ImageTk.PhotoImage(logo2)
+    logo_label2 = Label(main_frame, image=logo2)
+    logo_label2.image = logo2
+    logo_label2.place(x=10, y=10)
+    logo_label2.pack(side=RIGHT)
+
+    logo3 = Image.open("logos/numediart.png")
+    logo3 = logo3.resize((180, 120))
+    logo3 = ImageTk.PhotoImage(logo3)
+    logo_label3 = Label(main_frame, image=logo3)
+    logo_label3.image = logo3
+    logo_label3.place(x=10, y=500)
+    logo_label3.pack()
+    
+
+
+    
+
     # Menu
     but1 = Button(
         main_frame,
