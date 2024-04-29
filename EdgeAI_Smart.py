@@ -5,12 +5,9 @@ from tkinter import *
 import torch
 from torchvision import transforms
 import face_recognition
-import yolov5
 import cv2
 import time
 import numpy as np
-from collections import deque
-# from mmcv.parallel import collate, scatter
 import os
 from PIL import ImageTk, Image
 
@@ -180,58 +177,6 @@ def fire_detection():
     del fire_model
 
 
-def inference():
-    global camera, frame_queue, sample_length, data, test_pipeline, model, device_name, average_size, labels
-    inference_fps = 0
-    score_cache = deque()
-    scores_sum = 0
-    cur_time = time.time()
-    # wait for show results fct to read camera
-    while camera is None:
-        continue
-    # while camera is opened and frame are being read, DO INFERENCE :)
-    while camera and camera.isOpened():
-        try:
-            cur_windows = []
-            #
-            while len(cur_windows) == 0:
-                if len(frame_queue) == sample_length:
-                    cur_windows = list(np.array(frame_queue))
-                    if data["img_shape"] is None:
-                        data["img_shape"] = frame_queue.popleft().shape[:2]
-            cur_data = data.copy()
-            cur_data["imgs"] = cur_windows
-            cur_data = test_pipeline(cur_data)
-            cur_data = collate([cur_data], samples_per_gpu=1)
-            if next(model.parameters()).is_cuda:
-                cur_data = scatter(cur_data, [device_name])[0]
-            #
-            with torch.no_grad():
-                scores = model(return_loss=False, **cur_data)
-                scores = scores[0]
-            #
-            score_cache.append(scores)
-            scores_sum += scores
-            #
-            if len(score_cache) == average_size:
-                scores_avg = scores_sum / average_size
-                num_selected_labels = min(len(labels), 5)
-                #
-                scores_sorted = [
-                    (label, scores_avg[i]) for (i, label) in enumerate(labels)
-                ]
-                results = scores_sorted[:num_selected_labels]
-                result_queue.append(results)
-                scores_sum -= score_cache.popleft()
-            #
-            if inference_fps > 0:
-                # add a limiter for actual inference fps <= inference_fps
-                sleep_time = 1 / inference_fps - (time.time() - cur_time)
-                if sleep_time > 0:
-                    time.sleep(sleep_time)
-                cur_time = time.time()
-        except:
-            return
 
 
 def main():
