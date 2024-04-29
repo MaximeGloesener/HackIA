@@ -12,8 +12,7 @@ import numpy as np
 from collections import deque
 # from mmcv.parallel import collate, scatter
 import os
-from PIL import Image, ImageTk
-
+from PIL import ImageTk, Image
 
 LOADED = False
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -398,7 +397,8 @@ def main():
 
     # Etape 2: interface graphique
     root = Tk()
-    root.geometry("850x500")
+    root.resizable(width=False, height=False)
+    root.geometry("1000x650")
     root.title("Edge AI System")
     
     # Main frame
@@ -413,7 +413,7 @@ def main():
     label_msg.pack(side=TOP)
     label_msg2 = Label(
         main_frame,
-        text=("Hello, you are well authorized, congrats "),
+        text=("Hello, you are well authorized, congrats !"),
         bg="blue1",
         font=("Helvetica 22 bold"),
     )
@@ -421,84 +421,138 @@ def main():
     
     # add logos to the interface
     logo1 = Image.open("logos/UMONS-EN-rvb.png")
-    logo1 = logo1.resize((180, 120)) 
+    logo1 = logo1.resize((140, 80), Image.LANCZOS) 
     logo1 = ImageTk.PhotoImage(logo1)
     logo_label1 = Label(main_frame, image=logo1)
     logo_label1.image = logo1
-    logo_label1.place(x=10, y=10)
-    logo_label1.pack(side=LEFT)
+    logo_label1.place(x=50, y=550)
+
 
     logo2 = Image.open("logos/fpms.png")
-    logo2 = logo2.resize((180, 120))
+    logo2 = logo2.resize((140, 80), Image.LANCZOS)
     logo2 = ImageTk.PhotoImage(logo2)
     logo_label2 = Label(main_frame, image=logo2)
     logo_label2.image = logo2
-    logo_label2.place(x=10, y=10)
-    logo_label2.pack(side=RIGHT)
+    logo_label2.place(x=200, y=550)
 
     logo3 = Image.open("logos/numediart.png")
-    logo3 = logo3.resize((180, 120))
+    logo3 = logo3.resize((140, 80), Image.LANCZOS)
     logo3 = ImageTk.PhotoImage(logo3)
     logo_label3 = Label(main_frame, image=logo3)
     logo_label3.image = logo3
-    logo_label3.place(x=10, y=500)
-    logo_label3.pack()
-    
-
+    logo_label3.place(x=350, y=550)
 
     
+    logo4 = Image.open("logos/deepilia.png")
+    logo4 = logo4.resize((140, 80), Image.LANCZOS)
+    logo4 = ImageTk.PhotoImage(logo4)
+    logo_label4 = Label(main_frame, image=logo4)
+    logo_label4.image = logo4
+    logo_label4.place(x=500, y=550)
 
+    logo5 = Image.open("logos/infortech.png")
+    logo5 = logo5.resize((140, 80), Image.LANCZOS)
+    logo5 = ImageTk.PhotoImage(logo5)
+    logo_label4 = Label(main_frame, image=logo5)
+    logo_label4.image = logo5
+    logo_label4.place(x=650, y=550)
+
+    logo6 = Image.open("logos/LOGO_F114_Mohammed-BENJELLOUN.png")
+    logo6 = logo6.resize((140, 80), Image.LANCZOS)
+    logo6 = ImageTk.PhotoImage(logo6)
+    logo_label4 = Label(main_frame, image=logo6)
+    logo_label4.image = logo6
+    logo_label4.place(x=800, y=550)
+
+    
+    # Ajout texte
+    label_msg3 = Label(
+        main_frame,
+        text=("Version initiale:"),
+        bg="blue1",
+        font=("Helvetica 20 bold"),
+    )
+    label_msg3.place(x=150, y=120)
+    label_msg4 = Label(
+        main_frame,
+        text=("Version compressée:"),
+        bg="blue1",
+        font=("Helvetica 20 bold"),
+    )
+    label_msg4.place(x=550, y=120)
     # Menu
     but1 = Button(
         main_frame,
         padx=5,
         pady=5,
-        # bd=5,
-        width=39,
+        width=35,
+        height=3,
         bg="white",
         fg="black",
         relief=RAISED,
         command=fire_detection,
         text="Fire detection",
-        font=("helvetica 15 bold"),
+        font=("helvetica 16 bold"),
     )
-    but1.place(x=200, y=150)
+
+
     but2 = Button(
         main_frame,
         padx=5,
         pady=5,
         # bd=5,
-        width=39,
+        height=3,
+        width=35,
         bg="white",
         fg="black",
         relief=RAISED,
         command=suspect_localisation,
-        text="Suspect localisation (YOLOV5)",
-        font=("helvetica 15 bold"),
+        text="XAI",
+        font=("helvetica 16 bold"),
     )
-    but2.place(x=200, y=250)
-    #
+
     but3 = Button(
         main_frame,
         padx=5,
         pady=5,
+        height=3,
         # bd=5,
-        width=39,
+        width=35,
         bg="white",
         fg="black",
         relief=RAISED,
         command=suspect_localisation2,
-        text="Suspect localisation (YOLOV7)",
-        font=("helvetica 15 bold"),
+        text="Fire detection",
+        font=("helvetica 16 bold"),
     )
-    but3.place(x=200, y=350)
-    #
+
     but4 = Button(
         main_frame,
         padx=5,
         pady=5,
+        height=3,
         # bd=5,
-        width=12,
+        width=35,
+        bg="white",
+        fg="black",
+        relief=RAISED,
+        command=suspect_localisation2,
+        text="XAI",
+        font=("helvetica 16 bold"),
+    )
+    but1.place(x=100, y=200)
+    but2.place(x=100, y=300)
+    but3.place(x=500, y=200)
+    but4.place(x=500, y=300)
+
+
+    but5 = Button(
+        main_frame,
+        padx=5,
+        pady=5,
+        # bd=5,
+        height=2,
+        width=15,
         bg="white",
         fg="black",
         relief=RAISED,
@@ -506,8 +560,8 @@ def main():
         text="Exit",
         font=("helvetica 15 bold"),
     )
-    but4.place(x=670, y=440)
-    #
+    but5.place(x=670, y=440)
+
     root.mainloop()
 
 
