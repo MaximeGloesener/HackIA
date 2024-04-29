@@ -262,15 +262,15 @@ def main():
     # Ajout texte
     label_msg3 = Label(
         main_frame,
-        text=("Version initiale:"),
-        bg="blue1",
+        text=("Version initiale"),
+        bg="blue2",
         font=("Helvetica 20 bold"),
     )
     label_msg3.place(x=150, y=120)
     label_msg4 = Label(
         main_frame,
-        text=("Version compressée:"),
-        bg="blue1",
+        text=("Version compressée"),
+        bg="blue2",
         font=("Helvetica 20 bold"),
     )
     label_msg4.place(x=550, y=120)
@@ -289,7 +289,6 @@ def main():
         font=("helvetica 16 bold"),
     )
 
-
     but2 = Button(
         main_frame,
         padx=5,
@@ -300,7 +299,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=suspect_localisation,
+        command=fire_detection,
         text="XAI",
         font=("helvetica 16 bold"),
     )
@@ -315,7 +314,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=suspect_localisation2,
+        command=fire_detection,
         text="Fire detection",
         font=("helvetica 16 bold"),
     )
@@ -326,18 +325,18 @@ def main():
         pady=5,
         height=2,
         # bd=5,
-        width=30,
+        width=25,
         bg="white",
         fg="black",
         relief=RAISED,
-        command=suspect_localisation2,
+        command=fire_detection,
         text="XAI",
         font=("helvetica 16 bold"),
     )
-    but1.place(x=100, y=200)
-    but2.place(x=100, y=300)
-    but3.place(x=500, y=200)
-    but4.place(x=500, y=300)
+    but1.place(x=150, y=200)
+    but2.place(x=150, y=300)
+    but3.place(x=550, y=200)
+    but4.place(x=550, y=300)
 
 
     but5 = Button(
