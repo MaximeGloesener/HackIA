@@ -4,7 +4,7 @@
 from tkinter import *
 import torch
 from torchvision import transforms
-# import face_recognition
+import face_recognition
 import cv2
 import time
 import numpy as np
@@ -177,6 +177,15 @@ def fire_detection():
     del fire_model
 
 
+def fire_detection_compressed():
+    return 
+
+def XAI():
+    return 
+
+def XAI_compressed():
+    return 
+
 
 
 def main():
@@ -301,7 +310,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=XAI,
         text="XAI",
         font=("helvetica 16 bold"),
     )
@@ -316,7 +325,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=fire_detection_compressed,
         text="Fire detection",
         font=("helvetica 16 bold"),
     )
@@ -331,7 +340,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=XAI_compressed,
         text="XAI",
         font=("helvetica 16 bold"),
     )
