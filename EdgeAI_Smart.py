@@ -141,10 +141,8 @@ def fire_detection():
             data.unsqueeze_(0)
             klass = fire_model(data).cpu().detach().numpy()
 
-            # notification
-            pred_class = classes[np.argmax(klass)]
-            # tester si feu oou d2but de feu
-            # if......
+            # si feu alors run YOLO pour détecter l'endroit du feu
+            # if feu: ...
 
             cv2.putText(
                 img,
