@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# pytorch model pt 
+*.pt
+
+# wheel package
+*.whl
+
 # C extensions
 *.so
 

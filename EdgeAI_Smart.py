@@ -4,7 +4,7 @@
 from tkinter import *
 import torch
 from torchvision import transforms
-# import face_recognition
+import face_recognition
 import cv2
 import time
 import numpy as np
@@ -121,19 +121,18 @@ def authentification():
 
 def fire_detection():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    fire_model = torch.load("models/MobileNetV3_20230425171303.pt").to(device)
-    # fire_model = torch.load('models/MobileNet_20230422201227.pt').to(device)
-    # fire_model = torch.load('models/MobileNetV3_20230427170313-2.pt').to(device)
+    fire_model = torch.load("models/FireResNet50-97.pt").to(device)
+    yolo_model = torch.load("models/best_yolo.pt").to(device)
     fire_model.train(False)
     transform = transforms.Compose(
         [
             transforms.ToPILImage(),
-            transforms.RandomResizedCrop(224),
+            transforms.Resize(224),
             transforms.ToTensor(),
         ]
     )
     classes = ["Fire", "No fire", "Start fire"]
-    #
+    
     videos_to_test = ["firetest.mp4", "fire5.mp4", "fire4.mp4"]
     for video_to_test in videos_to_test:
         cam_port = os.path.join(BASE_PATH, "tests/" + video_to_test)
@@ -148,32 +147,52 @@ def fire_detection():
                 break
             data = transform(img).to(device)
             data.unsqueeze_(0)
-            klass = fire_model(data).cpu().detach().numpy()
+            with torch.no_grad():
+                classe = fire_model(data).cpu().detach().numpy()
 
-            # notification
-            pred_class = classes[np.argmax(klass)]
-            # tester si feu oou d2but de feu
-            # if......
+            # si classe = fire alors run le modèle de détection YOLO pour détecter emplacement du feu
+            if np.argmax(classe) == 0:
+                print("Fire detected")
+                with torch.no_grad():
+                    results = yolo_model(data)
+                print(results)
+                # draw bounding box
+                for result in results:
+                    x, y, w, h = result[0]
+                    confidence = result[1]
+                    if confidence > 0.7:
+                        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                        cv2.putText(img, f'Fire {confidence:.2f}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             cv2.putText(
                 img,
-                classes[np.argmax(klass)],
+                classes[np.argmax(classe)],
                 (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                1,
+                3,
                 (0, 255, 0),
                 thickness=2,
                 lineType=2,
             )
-            new_frame_time = time.time()
+            new_frame_time = time.monotonic()
             fps = 1 / (new_frame_time - prev_frame_time)
             prev_frame_time = new_frame_time
             cv2.imshow("Fire Detection", cv2.resize(img, (640, 480)))
+            # show fps 
+            cv2.putText(
+                img,
+                "FPS: " + str(int(fps)),
+                (10, 70),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                3,
+                (0, 255, 0),
+                thickness=2,
+                lineType=2,
+            )
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
         cam.release()
     cv2.destroyAllWindows()
-    #
     del fire_model
 
 
