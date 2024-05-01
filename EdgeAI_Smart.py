@@ -5,6 +5,7 @@ from tkinter import *
 import torch
 from torchvision import transforms
 import face_recognition
+import face_recognition
 import cv2
 import time
 import numpy as np
@@ -62,13 +63,6 @@ def authentification():
                     known_face_encodings, face_encoding
                 )
                 name = "Unknown"
-
-                # # If a match was found in known_face_encodings, just use the first one.
-                # if True in matches:
-                #     first_match_index = matches.index(True)
-                #     name = known_face_names[first_match_index]
-
-                # Or instead, use the known face with the smallest distance to the new face
                 face_distances = face_recognition.face_distance(
                     known_face_encodings, face_encoding
                 )
@@ -196,6 +190,15 @@ def fire_detection():
     del fire_model
 
 
+def fire_detection_compressed():
+    return 
+
+def XAI():
+    return 
+
+def XAI_compressed():
+    return 
+
 
 
 def main():
@@ -320,7 +323,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=XAI,
         text="XAI",
         font=("helvetica 16 bold"),
     )
@@ -335,7 +338,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=fire_detection_compressed,
         text="Fire detection",
         font=("helvetica 16 bold"),
     )
@@ -350,7 +353,7 @@ def main():
         bg="white",
         fg="black",
         relief=RAISED,
-        command=fire_detection,
+        command=XAI_compressed,
         text="XAI",
         font=("helvetica 16 bold"),
     )
