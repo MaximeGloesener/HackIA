@@ -10,7 +10,7 @@ import cv2
 import time
 import numpy as np
 import os
-from PIL import ImageTk, ImageChops
+from PIL import ImageTk, Image 
 from ultralytics import YOLO
 
 LOADED = False
