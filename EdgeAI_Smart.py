@@ -309,7 +309,7 @@ def main():
     # Ajout texte
     label_msg3 = Label(
         main_frame,
-        text=("Version initiale"),
+        text=("Initial version"),
         bg="blue1",
         fg="black",
         font=("Helvetica 20 bold"),
@@ -317,7 +317,7 @@ def main():
     label_msg3.place(x=220, y=140)
     label_msg4 = Label(
         main_frame,
-        text=("Version compressée"),
+        text=("Compressed version"),
         bg="blue1",
         fg="black",
         font=("Helvetica 20 bold"),
