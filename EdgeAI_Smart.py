@@ -261,49 +261,12 @@ def main():
     label_msg2.pack(side=TOP)
     
     # add logos to the interface
-    logo1 = Image.open("logos/umons.png")
-    logo1 = logo1.resize((140, 80), Image.LANCZOS) 
+    logo1 = Image.open("logos/all_logos.png")
+    logo1 = logo1.resize((900, 90), Image.LANCZOS) 
     logo1 = ImageTk.PhotoImage(logo1)
     logo_label1 = Label(main_frame, image=logo1)
     logo_label1.image = logo1
-    logo_label1.place(x=50, y=550)
-
-
-    logo2 = Image.open("logos/fpms.png")
-    logo2 = logo2.resize((140, 80), Image.LANCZOS)
-    logo2 = ImageTk.PhotoImage(logo2)
-    logo_label2 = Label(main_frame, image=logo2)
-    logo_label2.image = logo2
-    logo_label2.place(x=200, y=550)
-
-    logo3 = Image.open("logos/numediart.png")
-    logo3 = logo3.resize((140, 80), Image.LANCZOS)
-    logo3 = ImageTk.PhotoImage(logo3)
-    logo_label3 = Label(main_frame, image=logo3)
-    logo_label3.image = logo3
-    logo_label3.place(x=350, y=550)
-
-    
-    logo4 = Image.open("logos/deepilia.png")
-    logo4 = logo4.resize((140, 80), Image.LANCZOS)
-    logo4 = ImageTk.PhotoImage(logo4)
-    logo_label4 = Label(main_frame, image=logo4)
-    logo_label4.image = logo4
-    logo_label4.place(x=500, y=550)
-
-    logo5 = Image.open("logos/infortech.png")
-    logo5 = logo5.resize((140, 80), Image.LANCZOS)
-    logo5 = ImageTk.PhotoImage(logo5)
-    logo_label4 = Label(main_frame, image=logo5)
-    logo_label4.image = logo5
-    logo_label4.place(x=650, y=550)
-
-    logo6 = Image.open("logos/ilia.png")
-    logo6 = logo6.resize((140, 80), Image.LANCZOS)
-    logo6 = ImageTk.PhotoImage(logo6)
-    logo_label4 = Label(main_frame, image=logo6)
-    logo_label4.image = logo6
-    logo_label4.place(x=800, y=550)
+    logo_label1.pack(side=BOTTOM)
 
     
     # Ajout texte
