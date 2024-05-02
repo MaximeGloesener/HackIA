@@ -10,7 +10,8 @@ import cv2
 import time
 import numpy as np
 import os
-from PIL import ImageTk, Image
+from PIL import ImageTk, ImageChops
+from ultralytics import YOLO
 
 LOADED = False
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -113,10 +114,12 @@ def authentification():
     return authorized
 
 
+
 def fire_detection():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     fire_model = torch.load("models/FireResNet50-97.pt").to(device)
-    yolo_model = torch.load("models/best_yolo.pt").to(device)
+    yolo_model = YOLO('../runs/detect/train13/weights/best.pt')
+    
     fire_model.train(False)
     transform = transforms.Compose(
         [
@@ -127,7 +130,7 @@ def fire_detection():
     )
     classes = ["Fire", "No fire", "Start fire"]
     
-    videos_to_test = ["firetest.mp4", "fire5.mp4", "fire4.mp4"]
+    videos_to_test = ["fire.mp4"]
     for video_to_test in videos_to_test:
         cam_port = os.path.join(BASE_PATH, "tests/" + video_to_test)
         cam = cv2.VideoCapture(cam_port)
@@ -144,45 +147,67 @@ def fire_detection():
             with torch.no_grad():
                 classe = fire_model(data).cpu().detach().numpy()
 
+
+            
             # si classe = fire alors run le modèle de détection YOLO pour détecter emplacement du feu
-            if np.argmax(classe) == 0:
+            if np.argmax(classe) == 0 or np.argmax(classe) == 2:
                 print("Fire detected")
                 with torch.no_grad():
-                    results = yolo_model(data)
-                print(results)
-                # draw bounding box
-                for result in results:
-                    x, y, w, h = result[0]
-                    confidence = result[1]
-                    if confidence > 0.7:
-                        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        cv2.putText(img, f'Fire {confidence:.2f}', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                    results = yolo_model.predict(img, imgsz=224)
+                boxes = results[0].boxes.xyxy.tolist()
+                classes_yolo = results[0].boxes.cls.tolist()
+                names = results[0].names
+                confidences = results[0].boxes.conf.tolist()
+
+                # Iterate through the results
+                for box, cls, conf in zip(boxes, classes_yolo, confidences):
+                    x1, y1, x2, y2 = map(int, box)
+                    confidence = conf
+                    detected_class = cls
+                    name = names[int(cls)]
+                    # Draw the bounding box and label
+                    print(x1, y1, x2, y2, name, confidence)
+                    cv2.rectangle(
+                        img, (x1, y1), (x2, y2), (255, 128, 0), 2
+                    )
+                    cv2.putText(
+                        img,
+                        f"{name} {confidence:.2f}",
+                        (x1+2, y2-10),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        1,
+                        (255, 128, 0),
+                        2,
+                    )
 
             cv2.putText(
                 img,
                 classes[np.argmax(classe)],
-                (10, 30),
+                (10, 50),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                3,
+                2,
                 (0, 255, 0),
-                thickness=2,
-                lineType=2,
+                thickness=3,
             )
-            new_frame_time = time.monotonic()
+            
+            # calculate FPS and display it
+            new_frame_time = time.time()
             fps = 1 / (new_frame_time - prev_frame_time)
             prev_frame_time = new_frame_time
-            cv2.imshow("Fire Detection", cv2.resize(img, (640, 480)))
-            # show fps 
+            fps = int(fps)
+            fps = str(fps)
             cv2.putText(
                 img,
-                "FPS: " + str(int(fps)),
-                (10, 70),
+                "FPS: " + fps,
+                (500, 30),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                3,
+                1,
                 (0, 255, 0),
-                thickness=2,
-                lineType=2,
+                2,
             )
+            cv2.imshow("Fire Detection", cv2.resize(img, (640, 480)))
+            
+            
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
         cam.release()

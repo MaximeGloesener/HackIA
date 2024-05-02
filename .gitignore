@@ -10,6 +10,8 @@ __pycache__/
 # wheel package
 *.whl
 
+datasets/
+
 # C extensions
 *.so
 
