@@ -118,7 +118,7 @@ def authentification():
 def fire_detection():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     fire_model = torch.load("models/FireResNet50-97.pt").to(device)
-    yolo_model = YOLO('../runs/detect/train16/weights/best.pt')
+    yolo_model = YOLO('models/best.pt')
     
     fire_model.train(False)
     transform = transforms.Compose(
