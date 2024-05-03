@@ -130,9 +130,9 @@ def fire_detection():
     )
     classes = ["Fire", "No fire", "Start fire"]
     
-    videos_to_test = ["fire.mp4"]
+    videos_to_test = ["fire2.mp4"]
     for video_to_test in videos_to_test:
-        cam_port = os.path.join(BASE_PATH, "tests/" + video_to_test)
+        cam_port = os.path.join(BASE_PATH, "videos_tests/" + video_to_test)
         cam = cv2.VideoCapture(cam_port)
         #
         prev_frame_time = 0
@@ -150,7 +150,7 @@ def fire_detection():
 
             
             # si classe = fire alors run le modèle de détection YOLO pour détecter emplacement du feu
-            if np.argmax(classe) == 0 or np.argmax(classe) == 2:
+            if np.argmax(classe) == 0 or np.argmax(classe) == 2 or np.argmax(classe) == 1:
                 print("Fire detected")
                 with torch.no_grad():
                     results = yolo_model.predict(img, imgsz=224)
